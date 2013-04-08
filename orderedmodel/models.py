@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 
 class OrderedModel(models.Model):
-  order = models.PositiveIntegerField(blank=True, unique=True)
+  order = models.PositiveIntegerField(default=1, blank=True, unique=False)
 
   class Meta:
     abstract = True
@@ -17,6 +17,7 @@ class OrderedModel(models.Model):
         self.order = 1 # 0 is a special index used in swap
     if self.order == 0 and not swapping:
       raise ValidationError("Can't set 'order' to 0")
+
     super(OrderedModel, self).save(*args, **kwargs)
 
   @classmethod
